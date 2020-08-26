@@ -7,7 +7,17 @@ app.use(express.json());
 const projects = [];
 
 app.get('/projects', (req, res) => {
-	return res.json(projects);
+	const { title } = req.query;
+
+	const results = title
+		? projects.filter(project => {
+				let projetcTitle = project.title;
+				projetcTitle = title.toLowerCase();
+				return projetcTitle.includes(title.toLowerCase());
+		  })
+		: projects;
+
+	return res.json(results);
 });
 
 app.post('/projects', (req, res) => {
@@ -40,12 +50,12 @@ app.put('/projects/:id', (req, res) => {
 app.delete('/projects/:id', (req, res) => {
 	const { id } = req.params;
 
-    const projectIndex = projects.findIndex(project => project.id === id);
+	const projectIndex = projects.findIndex(project => project.id === id);
 
 	if (projectIndex < 0) {
 		return res.status(404).json({ error: 'Project not found' });
-    }
-    projects.splice(projectIndex, 1);
+	}
+	projects.splice(projectIndex, 1);
 
 	return res.status(200).send();
 });

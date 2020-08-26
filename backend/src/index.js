@@ -20,14 +20,21 @@ app.post('/projects', (req, res) => {
 
 app.put('/projects/:id', (req, res) => {
 	const { id } = req.params;
+	const { title, owner } = req.body;
 
 	const projectIndex = projects.findIndex(project => project.id === id);
 
 	if (projectIndex < 0) {
 		return res.status(404).json({ error: 'Project not found' });
 	}
+	const project = {
+		id,
+		title,
+		owner,
+	};
+	projects[projectIndex] = project;
 
-	return res.json();
+	return res.json(project);
 });
 
 app.delete('/projects/:id', (req, res) => {

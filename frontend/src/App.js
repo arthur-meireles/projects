@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import api from './services/api';
 import './App.css';
 
 function App() {
-	const [projects, setProjects] = useState(['Web Dev', 'Web Production']);
+    const [projects, setProjects] = useState(['Web Dev', 'Web Production']);
+    
+    useEffect(() => {
+        api.get('/projects').then(res => {
+            console.log(res)
+        })
+    }, []);
 
 	//useState retorna array com 2 posições [state, setState]
 	// 1. A variavel com o valor inicial
